@@ -53,7 +53,7 @@ for URL in URLs:
 
 print("■■■■■■■■■■■■■■■■■■■■■■■■■")
 
-with open('./test.csv', 'w', newline='') as f:
+with open('./getCaferun.csv', 'w', newline='') as f:
     writer = csv.writer(f)
     for name,URL in Lists.items():
         output = ""

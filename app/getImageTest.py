@@ -32,18 +32,21 @@ d = webdriver.Remote(
     desired_capabilities=o.to_capabilities()
 )
 
-#URLs = ['http://concafenavi.com/area/tokyo/','http://concafenavi.com/area/osaka/,http://concafenavi.com/area/chiba/','http://concafenavi.com/area/aich','http://concafenavi.com/area/fukuoka','http://concafenavi.com/kanagawa','http://concafenavi.com/area/saitama','http://concafenavi.com/area/tochigi','http://concafenavi.com/area/gumma']
-URLs = ['http://concafenavi.com/area/tokyo/']
+URLs = ['http://concafenavi.com/area/tokyo/','http://concafenavi.com/area/osaka/,http://concafenavi.com/area/chiba/','http://concafenavi.com/area/aich','http://concafenavi.com/area/fukuoka','http://concafenavi.com/kanagawa','http://concafenavi.com/area/saitama','http://concafenavi.com/area/tochigi','http://concafenavi.com/area/gumma']
+#URLs = ['http://concafenavi.com/area/chiba/']
 Lists = {}
+
+d.get("")
 
 for URL in URLs:
     d.get(URL)
     #print(d.title)
-    sleep(3)
+
     for shop in d.find_elements_by_class_name("archiveItem"):
         shopName = shop.find_element_by_class_name("hc")
         print(shopName.text + "⑳" + shopName.get_attribute("href"))
         Lists[shopName.text] = shopName.get_attribute("href")
+
 
 
 print("■■■■■■■■■■■■■■■■■■■■■■■■■")
@@ -68,8 +71,9 @@ with open('./getConcafeNavi.csv', 'w', newline='') as f:
         for table in job_tables:
             for val in table.find_elements_by_tag_name("td"):
                 outList.append(val.text)
-        
+
         #1/25追加 サムネ画像を取得
-        print(d.find_element_by_xpath("/html/body[@class='t-light']/div[@class='l-wrapper']/main[@class='l-main']/section[@class='content content-page']/div[@class='mb20 mt40']/img").get_attribute("src"))
+        outList.append(d.find_element_by_xpath("/html/body[@class='t-light']/div[@class='l-wrapper']/main[@class='l-main']/section[@class='content content-page']/div[@class='mb20 mt40']/img/@src")[0].attribute("src"))
         writer.writerow(outList)
+
 d.quit()

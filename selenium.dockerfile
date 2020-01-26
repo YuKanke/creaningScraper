@@ -21,3 +21,5 @@ RUN apk add --update \
     && rm -rf /app/noto \
     # Add selenium
     && pip install selenium
+    && pip install google-api-python-client
+    && pip install PyDrive
