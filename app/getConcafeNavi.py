@@ -2,7 +2,15 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from time import sleep
+import datetime
 import csv
+import myFunc
+
+# 定数的なの
+#URLs = ['http://concafenavi.com/area/tokyo/','http://concafenavi.com/area/osaka/,http://concafenavi.com/area/chiba/','http://concafenavi.com/area/aich','http://concafenavi.com/area/fukuoka','http://concafenavi.com/kanagawa','http://concafenavi.com/area/saitama','http://concafenavi.com/area/tochigi','http://concafenavi.com/area/gumma']
+URLs = ['http://concafenavi.com/area/hokkaido/']
+googleDriveFolderId = "1nLocyxN40simk5Ud34s8-LIkmtmNJ2Fs"
+
 
 chrome_path = '/usr/bin/chromium-browser'
 chromedriver_path = '/usr/lib/chromium/chromedriver'
@@ -32,8 +40,7 @@ d = webdriver.Remote(
     desired_capabilities=o.to_capabilities()
 )
 
-#URLs = ['http://concafenavi.com/area/tokyo/','http://concafenavi.com/area/osaka/,http://concafenavi.com/area/chiba/','http://concafenavi.com/area/aich','http://concafenavi.com/area/fukuoka','http://concafenavi.com/kanagawa','http://concafenavi.com/area/saitama','http://concafenavi.com/area/tochigi','http://concafenavi.com/area/gumma']
-URLs = ['http://concafenavi.com/area/tokyo/']
+
 Lists = {}
 
 for URL in URLs:
@@ -48,7 +55,7 @@ for URL in URLs:
 
 print("■■■■■■■■■■■■■■■■■■■■■■■■■")
 
-with open('./getConcafeNavi.csv', 'w', newline='') as f:
+with open('./getConcafeNavi' + datetime.datetime.now().strftime('%Y%m%d%H%M%S') + '.csv', 'w', newline='') as f:
     writer = csv.writer(f)
     for name,URL in Lists.items():
         output = ""
@@ -69,7 +76,20 @@ with open('./getConcafeNavi.csv', 'w', newline='') as f:
             for val in table.find_elements_by_tag_name("td"):
                 outList.append(val.text)
         
-        #1/25追加 サムネ画像を取得
-        print(d.find_element_by_xpath("/html/body[@class='t-light']/div[@class='l-wrapper']/main[@class='l-main']/section[@class='content content-page']/div[@class='mb20 mt40']/img").get_attribute("src"))
+        #1/28追加 サムネ画像を取得
+        try: 
+            imageURL = d.find_element_by_xpath("/html/body[@class='t-light']/div[@class='l-wrapper']/main[@class='l-main']/section[@class='content content-page']/div[@class='mb20 mt40']/img").get_attribute("src")
+            imageName = "images/" + name + ".png"
+            myFunc.downloadFile(imageURL, imageName)
+            imageID = myFunc.uploadFile(imageName,googleDriveFolderId)
+            myFunc.removeFile(imageName)
+
+            outList.append(imageURL)
+            outList.append(imageName)
+            outList.append(imageID)
+        except:
+            import traceback
+            print(traceback.print_exc())
+
         writer.writerow(outList)
 d.quit()

@@ -1,0 +1,5 @@
+app/*.csv
+app/client_secrets.json
+app/credentials.json
+app/settings.yaml
+app/__pycache__/
