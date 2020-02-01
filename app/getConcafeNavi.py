@@ -78,7 +78,7 @@ with open('./getConcafeNavi' + datetime.datetime.now().strftime('%Y%m%d%H%M%S') 
         
         #1/28追加 サムネ画像を取得
         try: 
-            if not d.find_elements_by_xpath("/html/body[@class='t-light']/div[@class='l-wrapper']/main[@class='l-main']/section[@class='content content-page']/div[@class='mb20 mt40']/img").get_attribute("src") == []:
+            if not d.find_elements_by_xpath("/html/body[@class='t-light']/div[@class='l-wrapper']/main[@class='l-main']/section[@class='content content-page']/div[@class='mb20 mt40']/img") == []:
                 imageURL = d.find_element_by_xpath("/html/body[@class='t-light']/div[@class='l-wrapper']/main[@class='l-main']/section[@class='content content-page']/div[@class='mb20 mt40']/img").get_attribute("src")
                 imageName = "images/" + name + ".png"
                 myFunc.downloadFile(imageURL, imageName)
