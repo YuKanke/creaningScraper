@@ -9,7 +9,7 @@ import csv
 def main():
 
 
-    rtn = {'test','test2'}
+    rtn = []
 
     # 定数的なの
     URL = 'http://www.hakuyosha.co.jp/cleaning/shop/result/'
@@ -69,6 +69,15 @@ def main():
                 kyujitu = shopInfo.find_elements_by_tag_name("dd")[3].text
                 print(shopName + " / " + address + " / " + tel + " / " + eigyou + " / " + kyujitu)
                 print("---------------------------")
+
+                row = []
+                row.append(shopName)
+                row.append(address)
+                row.append(eigyou)
+                row.append(tel)
+                row.append(kyujitu)
+
+                rtn.append(row)
             # ループ判定
             if d.find_elements_by_class_name("next"):
                 nextURL = d.find_element_by_class_name("next").find_element_by_tag_name("a").get_attribute("href")
