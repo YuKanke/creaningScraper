@@ -35,7 +35,10 @@ def main():
     for shop in shopList:
         shopName = shop.find_elements_by_tag_name("td")[1].text
         address = shop.find_elements_by_tag_name("td")[3].text.split("\n")[0]
-        tel = shop.find_elements_by_tag_name("td")[3].text.split("\n")[1].replace("TEL.","")
+        if len(shop.find_elements_by_tag_name("td")[3].text.split("\n")) >= 2:
+            tel = shop.find_elements_by_tag_name("td")[3].text.split("\n")[1].replace("TEL.","")
+        else:
+            tel = "情報なし"
         eigyou = "情報なし"
         kyujitu = "情報なし"
         print(shopName + " / " + address + " / " + tel + " / " + eigyou + " / " + kyujitu)
